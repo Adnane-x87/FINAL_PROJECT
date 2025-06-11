@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Venue Booking</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="./js/main.js"></script>
+
+    <style>
+      body {
+        margin: 0;
+        font-family: "Rubik", sans-serif;
+        background-color: #ffffff;
+      }
+
+      header {
+        background-color: #2d4930;
+        height: 70px;
+        padding: 0 2rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .logo {
+        width: 150px;
+        height: auto;
+        margin-top: 36px;
+      }
+
+      .container {
+        text-align: center;
+        padding: 2rem;
+      }
+
+      .container h2 {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .container p {
+        font-weight: 600;
+        margin-bottom: 2rem;
+        font-size: 1rem;
+      }
+
+      form {
+        max-width: 700px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+      }
+
+      input,
+      select {
+        padding: 1rem;
+        border: 2px solid #2d4930;
+        border-radius: 6px;
+        font-weight: 600;
+        background-color: #d8d8d8;
+        color: #2d4930;
+        font-size: 1rem;
+        flex: 1 1 300px;
+      }
+
+      input::placeholder {
+        color: #2d4930;
+        opacity: 1;
+      }
+
+      select {
+        appearance: none;
+      }
+
+      .full-width {
+        flex: 1 1 100%;
+      }
+
+      button {
+        background-color: #2d4930;
+        color: white;
+        font-size: 1.2rem;
+        font-weight: 700;
+        padding: 0.8rem 2rem;
+        border: none;
+        border-radius: 999px;
+        margin-top: 1.5rem;
+        cursor: pointer;
+      }
+
+      button:hover {
+        opacity: 0.95;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a href="index.html"
+        ><img src="./icon/hallane.png" alt="logo" class="logo"
+      /></a>
+    </header>
+
+    <div class="container">
+      <h2>Reserve now</h2>
+      <p>complete the form below to book your venue</p>
+
+      <form>
+        <input type="text" placeholder="first name" required />
+        <input type="text" placeholder="last name" required />
+        <input type="tel" placeholder="phone number" required />
+        <input type="email" placeholder="email" required />
+        <input type="date" name="date" required />
+        <select id="selectedRoom" required class="full-width">
+          <option value="">▶ select hall</option>
+          <!-- Options will be added dynamically -->
+        </select>
+        <button type="submit">reserve</button>
+      </form>
+    </div>
+  </body>
+</html>
