@@ -1,3 +1,55 @@
+<?php
+session_start();
+require_once './db.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
+
+    if (empty($email) || empty($password)) {
+        $_SESSION['login_message'] = 'Email and password are required.';
+        $_SESSION['login_message_type'] = 'error';
+    } else {
+        // Check only in client table
+        $stmt = $pdo->prepare("SELECT user_id, password FROM client WHERE email = ?");
+        $stmt->execute([$email]);
+        $user = $stmt->fetch();
+
+        // If password is plain (not hashed), use ===
+        if ($user && $password === $user['password']) {
+            $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['user_type'] = 'client';
+            header('Location: arab.php');
+            exit;
+        }
+        
+         // Try to authenticate as an admin
+        $stmt = $pdo->prepare("SELECT id_admin, password FROM admin WHERE email = ?");
+        $stmt->execute([$email]);
+        $user = $stmt->fetch();
+
+
+
+        if ($user && password_verify($password, $user['password'])) {
+            $_SESSION['user_id'] = $user['id_admin'];
+            $_SESSION['user_type'] = 'admin';
+            header('Location: dashbord.php');
+            exit;
+        }
+
+
+        $_SESSION['login_message'] = 'Email or password is incorrect.';
+        $_SESSION['login_message_type'] = 'error';
+    }
+
+    header('Location:' . $_SERVER['PHP_SELF']);
+    exit;
+}
+
+$message = $_SESSION['login_message'] ?? '';
+$messageType = $_SESSION['login_message_type'] ?? '';
+unset($_SESSION['login_message'], $_SESSION['login_message_type']);
+?>
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
   <head>
@@ -182,14 +234,19 @@
       </div>
 
       <div class="right-section">
-        <form class="login-form">
+      <form class="login-form" method="POST" action="">
           <h2 class="login-title">تسجيل الدخول</h2>
-
+             <?php if ($message): ?>
+              <div class="message <?php echo htmlspecialchars($messageType); ?>">
+                <?php echo htmlspecialchars($message); ?>
+        </div>
+      <?php endif; ?>
           <div class="form-group">
             <input
               type="text"
               class="form-input"
-              placeholder="اسم المستخدم"
+              name = "email"
+              placeholder="البريد الإلكتروني"
               required
             />
           </div>
@@ -198,6 +255,7 @@
             <input
               type="password"
               class="form-input"
+              name="password"
               placeholder="كلمة المرور"
               required
             />
@@ -215,24 +273,5 @@
         </form>
       </div>
     </div>
-
-    <script>
-      document
-        .querySelector(".login-form")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
-
-          const username = document.querySelector('input[type="text"]').value;
-          const password = document.querySelector(
-            'input[type="password"]'
-          ).value;
-
-          if (username && password) {
-            alert("تم تسجيل الدخول بنجاح!");
-          } else {
-            alert("يرجى ملء جميع الحقول");
-          }
-        });
-    </script>
   </body>
 </html>

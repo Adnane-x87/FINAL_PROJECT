@@ -28,8 +28,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([$email]);
         $user = $stmt->fetch();
 
+
+
         if ($user && password_verify($password, $user['password'])) {
-            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_id'] = $user['id_admin'];
             $_SESSION['user_type'] = 'admin';
             header('Location: dashbord.php');
             exit;

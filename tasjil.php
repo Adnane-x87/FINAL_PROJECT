@@ -1,3 +1,49 @@
+<?php // Connect to the database
+require_once './db.php';
+
+// If the database connection fails
+if (!isset($pdo)) {
+    die("Error: Database connection not established.");
+}
+
+$errors = []; // Array to store error messages
+
+// Check if the form was submitted using POST method
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Get and sanitize the form inputs
+    $username = htmlspecialchars(trim($_POST['username']));
+    $email = htmlspecialchars(trim($_POST['email']));
+    $password = trim($_POST['password'] ?? '');
+
+    // Basic validation
+    if (empty($username) || empty($email) || empty($password)) {
+        $errors[] = "All fields are required.";
+    } elseif (strlen($password) < 8) {
+        $errors[] = "Password must be at least 8 characters long.";
+    }
+
+    // If no errors, insert the user into the database
+    if (empty($errors)) {
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT); // Secure password hashing
+
+        $sql = "INSERT INTO `client` (`username`, `email`, `password`) VALUES (?, ?, ?)";
+
+        try {
+            $stmt = $pdo->prepare($sql); // Prepare SQL statement
+            $stmt->execute([$username, $email, $hashed_password]); // Execute with data
+            header("Location: arablogin.php"); // Redirect to login page after success
+            exit();
+        } catch (PDOException $e) {
+            // Check for duplicate email (unique constraint violation)
+            if ($e->getCode() == 23000) {
+                $errors[] = "This email is already registered.";
+            } else {
+                $errors[] = "Registration failed: " . $e->getMessage();
+            }
+        }
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
   <head>
@@ -174,13 +220,20 @@
       </div>
 
       <div class="right-section">
-        <form class="login-form">
+      <form class="login-form" method="POST" action="">
           <h2 class="login-title">سجل الآن</h2>
-
+  <?php if (!empty($errors)): ?>
+          <div class="errors">
+            <?php foreach ($errors as $error): ?>
+              <p><?= htmlspecialchars($error) ?></p>
+            <?php endforeach; ?>
+          </div>
+        <?php endif; ?>
           <div class="form-group">
             <input
               type="text"
               class="form-input"
+              name="username"
               placeholder="اسم المستخدم"
               required
             />
@@ -190,6 +243,7 @@
             <input
               type="email"
               class="form-input"
+              name="email"
               placeholder="البريد الإلكتروني"
               required
             />
@@ -199,6 +253,7 @@
             <input
               type="password"
               class="form-input"
+              name="password"
               placeholder="كلمة المرور"
               required
             />
@@ -213,24 +268,6 @@
       </div>
     </div>
 
-    <script>
-      document
-        .querySelector(".login-form")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
-
-          const username = document.querySelector('input[type="text"]').value;
-          const email = document.querySelector('input[type="email"]').value;
-          const password = document.querySelector(
-            'input[type="password"]'
-          ).value;
-
-          if (username && email && password) {
-            alert("Successful sign up!");
-          } else {
-            alert("Please fill in all fields");
-          }
-        });
-    </script>
+   
   </body>
 </html>
