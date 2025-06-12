@@ -42,7 +42,6 @@
         display: flex;
         align-items: center;
         gap: 12px;
-        transition: background 0.2s;
         font-size: 14px;
       }
 
