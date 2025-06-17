@@ -265,6 +265,7 @@ html {
   font-family: Arial, sans-serif;
   position: relative;
   right: 60px;
+  display: flex;
 }
 
 .image-section {

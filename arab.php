@@ -23,8 +23,8 @@ $information = $pdo->query("SELECT * FROM hall");
     <section id="one">
       <div class="navbar">
         <div class="links">
-          <a href="index.html" class="mr"> ع</a>
-          <a href="arablogin.html" class="login"> تسجيل الدخول</a>
+          <a href="index.php" class="mr"> ع</a>
+          <a href="arablogin.php" class="login"> تسجيل الدخول</a>
         </div>
         <nav>
           <ul>

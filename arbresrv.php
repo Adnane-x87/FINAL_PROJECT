@@ -161,7 +161,7 @@ $selected_hall_name = isset($hall_names[$hall_id]) ? $hall_names[$hall_id] : '';
   </head>
   <body>
     <header>
-      <a href="arab.html"
+      <a href="arab.php"
         ><img src="./icon/arablogo.png" alt="logo" class="logo"
       /></a>
     </header>
