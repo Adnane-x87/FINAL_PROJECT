@@ -1,3 +1,9 @@
+
+<?php 
+include 'db.php'; 
+$information = $pdo->query("SELECT * FROM hall"); 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -31,7 +37,7 @@
         </nav>
 
         <div class="links">
-          <a href="arab.html" class="mr">MR</a>
+          <a href="arab.php" class="mr">MR</a>
           <a href="login.php" class="login"> LOG IN</a>
         </div>
       </div>
@@ -116,39 +122,33 @@
           a distinguished experience."
         </p>
         <br /><br />
-        <div class="venue-card">
-          <div class="image-section">
-            <img
-              class="image-section"
-              src="./images/main.png"
-              alt="pic of hall"
-            />
-            <div class="top-tags">
-              <span class="tag"
-                ><i class="fas fa-map-marker-alt"></i> tangier, iberia</span
-              >
-              <span class="tag"><i class="fas fa-users"></i> 500 people</span>
-            </div>
-          </div>
+<div class="venue-card">
+  <?php foreach ($information as $key => $value): ?>
+    <div class="image-section">
+      <img class="image-section" src="images/<?= $value['image'] ?>" />
+      <div class="top-tags">
+        <span class="tag"><i class="fas fa-map-marker-alt"></i> <?= $value['local'] ?></span>
+        <span class="tag"><i class="fas fa-users"></i> <?= $value['capacity']  ?></span>
+      </div>
+    </div>
 
-          <div class="content">
-            <div class="header">
-              <h3 class="title">main hall</h3>
-              <div class="price">
-                <div class="price-amount">4000 DH</div>
-                <div class="price-period">/1 day</div>
-              </div>
-            </div>
-
-            <p class="description">
-              Experience the perfect setting for any occasion—spacious, stylish,
-              and fully equipped with premium seating, dynamic lighting, and
-              crystal-clear sound for unforgettable events
-            </p>
-
-            <a href="reserv.html" class="reserve-btn">Reserve now</a>
-          </div>
+    <div class="content">
+      <div class="header">
+        <h3 class="title"><?= $value['title'] ?></h3>
+        <div class="price">
+          <div class="price-amount"><?= $value['price'] ?> DH</div>
+          <div class="price-period"><?= $value['time'] ?></div>
         </div>
+      </div>
+
+      <p class="description">
+        <?= $value['description'] ?>
+      </p>
+
+      <a href="reserv.php?hall_id=<?= $key ?>" class="reserve-btn">Reserve now</a>
+    </div>
+  <?php endforeach; ?>
+</div>
         <br /><br />
       </div>
     </section>

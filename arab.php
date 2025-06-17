@@ -1,3 +1,7 @@
+<?php 
+include 'db.php'; 
+$information = $pdo->query("SELECT * FROM hall"); 
+?>
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
   <head>
@@ -112,36 +116,31 @@
         </p>
         <br /><br />
         <div class="venue-card">
+            <?php foreach ($information as $key => $value): ?>
           <div class="image-section">
-            <img
-              class="image-section"
-              src="./images/main.png"
-              alt="pic of hall"
-            />
-            <div class="top-tags">
-              <span class="tag"
-                ><i class="fas fa-map-marker-alt"></i> طنجة، إيبيريا</span
-              >
-              <span class="tag"><i class="fas fa-users"></i> 500 شخص</span>
+                  <img class="image-section" src="images/<?= $value['image'] ?>" />
+                   <div class="top-tags">
+                    <span class="tag"><i class="fas fa-map-marker-alt"></i> <?= $value['arabic_local'] ?></span>
+                    <span class="tag"><i class="fas fa-users"></i> <?= $value['capacity']  ?></span>
             </div>
           </div>
 
           <div class="content">
             <div class="header">
-              <h3 class="title">القاعة الرئيسية</h3>
+           <h3 class="title"><?= $value['arabic_title'] ?></h3>
               <div class="price">
-                <div class="price-amount">4000 درهم</div>
-                <div class="price-period">/1 يوم</div>
+              <div class="price-amount"><?= $value['price'] ?> درهم </div>
+              <div class="price-period"><?= $value['arabic_time'] ?></div>
               </div>
             </div>
 
-            <p class="description">
-              استمتع بالمكان المثالي لأي مناسبة - واسع وأنيق ومجهز بالكامل
-              بمقاعد مميزة وإضاءة ديناميكية وصوت نقي للغاية لأحداث لا تُنسى
-            </p>
+             <p class="description">
+             <?= $value['arabic_description'] ?>
+             </p>
 
-            <a href="arbresrv.html" class="reserve-btn">احجز الآن</a>
+        <a href="arbresrv.php?hall_id=<?= $key ?>" class="reserve-btn"> احجزالآن</a>
           </div>
+          <?php endforeach; ?>
         </div>
         <br /><br />
       </div>
