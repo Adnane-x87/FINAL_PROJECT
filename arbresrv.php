@@ -52,13 +52,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 
 // تحديد اسم القاعة للعرض
-$hall_names = [
-    '1' => 'Main Hall',
-    '2' => 'Conference Hall', 
-    '3' => 'Event Hall'
-];
-$selected_hall_name = isset($hall_names[$hall_id]) ? $hall_names[$hall_id] : '';
+$selected_hall_name = '';
+if ($hall_id) {
+    $stmt = $pdo->prepare('SELECT title FROM hall WHERE hall_id = ?');
+    $stmt->execute([$hall_id]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($row) {
+        $selected_hall_name = $row['title'];
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
   <head>
@@ -157,6 +161,27 @@ $selected_hall_name = isset($hall_names[$hall_id]) ? $hall_names[$hall_id] : '';
       button:hover {
         opacity: 0.95;
       }
+      .error {
+        background-color: #ffebee;
+        color: #c62828;
+        padding: 1rem;
+        border-radius: 6px;
+        margin-bottom: 1rem;
+        border: 1px solid #ffcdd2;
+      }
+
+      .success {
+        background-color: #e8f5e8;
+        color: #2e7d32;
+        padding: 1rem;
+        border-radius: 6px;
+        margin-bottom: 1rem;
+        border: 1px solid #c8e6c9;
+      }
+
+      .error p, .success p {
+        margin: 0;
+      }
     </style>
   </head>
   <body>
@@ -168,7 +193,7 @@ $selected_hall_name = isset($hall_names[$hall_id]) ? $hall_names[$hall_id] : '';
 
     <div class="container">
       <h2>احجز الآن</h2>
-       <?php if ($selected_hall_name): ?>
+      <?php if ($selected_hall_name): ?>
         <div class="selected-hall">
           Selected Hall: <?= htmlspecialchars($selected_hall_name) ?>
         </div>
@@ -195,12 +220,14 @@ $selected_hall_name = isset($hall_names[$hall_id]) ? $hall_names[$hall_id] : '';
         <input type="tel"   name="number" placeholder="رقم الهاتف" value="<?= htmlspecialchars($number ?? '') ?>" required />
         <input type="email" name="email" placeholder=" البريد الإلكتروني" value="<?= htmlspecialchars($email ?? '') ?>" required />
         <input type="date" name="date"  value="<?= htmlspecialchars($date ?? '') ?>" min="<?= date('Y-m-d') ?>" required />
-        <select required class="full-width">
-          <option value="" disabled selected>▶ اختر القاعة</option>
-          <option value="hall1">Grand Ballroom</option>
-          <option value="hall2">Conference Hall A</option>
-          <option value="hall3">Garden Pavilion</option>
+        <select name="hall_id" class="full-width" required readonly>
+          <?php if ($hall_id && $selected_hall_name): ?>
+            <option value="<?= htmlspecialchars($hall_id) ?>" selected><?= htmlspecialchars($selected_hall_name) ?></option>
+          <?php else: ?>
+            <option value="">▶ Select Hall</option>
+          <?php endif; ?>
         </select>
+        <input type="hidden" name="client_id" value="1">
         <button type="submit">احجز</button>
       </form>
     </div>

@@ -52,12 +52,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 
 // تحديد اسم القاعة للعرض
-$hall_names = [
-    '1' => 'Main Hall',
-    '2' => 'Conference Hall', 
-    '3' => 'Event Hall'
-];
-$selected_hall_name = isset($hall_names[$hall_id]) ? $hall_names[$hall_id] : '';
+$selected_hall_name = '';
+if ($hall_id) {
+    $stmt = $pdo->prepare('SELECT title FROM hall WHERE hall_id = ?');
+    $stmt->execute([$hall_id]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($row) {
+        $selected_hall_name = $row['title'];
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -231,11 +234,12 @@ $selected_hall_name = isset($hall_names[$hall_id]) ? $hall_names[$hall_id] : '';
         <input type="email" name="email" placeholder="Email" value="<?= htmlspecialchars($email ?? '') ?>" required />
         <input type="date" name="date" value="<?= htmlspecialchars($date ?? '') ?>" min="<?= date('Y-m-d') ?>" required />
         
-        <select name="hall_id" class="full-width" required>
-          <option value="">▶ Select Hall</option>
-          <option value="1" <?= $hall_id == '1' ? 'selected' : '' ?>></option>
-          <option value="2" <?= $hall_id == '2' ? 'selected' : '' ?>>Conference Hall</option>
-          <option value="3" <?= $hall_id == '3' ? 'selected' : '' ?>>Event Hall</option>
+        <select name="hall_id" class="full-width" required readonly>
+          <?php if ($hall_id && $selected_hall_name): ?>
+            <option value="<?= htmlspecialchars($hall_id) ?>" selected><?= htmlspecialchars($selected_hall_name) ?></option>
+          <?php else: ?>
+            <option value="">▶ Select Hall</option>
+          <?php endif; ?>
         </select>
         
         <input type="hidden" name="client_id" value="1">

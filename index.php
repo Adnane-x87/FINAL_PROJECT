@@ -1,4 +1,3 @@
-
 <?php 
 include 'db.php'; 
 $information = $pdo->query("SELECT * FROM hall"); 
@@ -122,33 +121,35 @@ $information = $pdo->query("SELECT * FROM hall");
           a distinguished experience."
         </p>
         <br /><br />
-<div class="venue-card">
-  <?php foreach ($information as $key => $value): ?>
-    <div class="image-section">
-      <img class="image-section" src="images/<?= $value['image'] ?>" />
-      <div class="top-tags">
-        <span class="tag"><i class="fas fa-map-marker-alt"></i> <?= $value['local'] ?></span>
-        <span class="tag"><i class="fas fa-users"></i> <?= $value['capacity']  ?></span>
-      </div>
-    </div>
+        <div class="venue-cards-container">
+          <?php foreach ($information as $key => $value): ?>
+            <div class="venue-card">
+              <div class="image-section">
+                <img class="image-section" src="images/<?= $value['image'] ?>" />
+                <div class="top-tags">
+                  <span class="tag"><i class="fas fa-map-marker-alt"></i> <?= $value['local'] ?></span>
+                  <span class="tag"><i class="fas fa-users"></i> <?= $value['capacity']  ?></span>
+                </div>
+              </div>
 
-    <div class="content">
-      <div class="header">
-        <h3 class="title"><?= $value['title'] ?></h3>
-        <div class="price">
-          <div class="price-amount"><?= $value['price'] ?> DH</div>
-          <div class="price-period"><?= $value['time'] ?></div>
+              <div class="content">
+                <div class="header">
+                  <h3 class="title"><?= $value['title'] ?></h3>
+                  <div class="price">
+                    <div class="price-amount"><?= $value['price'] ?> DH</div>
+                    <div class="price-period"><?= $value['time'] ?></div>
+                  </div>
+                </div>
+
+                <p class="description">
+                  <?= $value['description'] ?>
+                </p>
+
+                <a href="reserv.php?hall_id=<?= $value['hall_id'] ?>" class="reserve-btn">Reserve now</a>
+              </div><br>
+            </div>
+          <?php endforeach; ?>
         </div>
-      </div>
-
-      <p class="description">
-        <?= $value['description'] ?>
-      </p>
-
-      <a href="reserv.php?hall_id=<?= $key ?>" class="reserve-btn">Reserve now</a>
-    </div>
-  <?php endforeach; ?>
-</div>
         <br /><br />
       </div>
     </section>

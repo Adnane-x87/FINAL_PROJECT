@@ -253,7 +253,17 @@ html {
   font-family: "ADLaM Display", cursive;
   margin: auto;
 }
+.venue-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  justify-content: center;
+  margin: 0 auto;
+  width: 90%;
+}
 .venue-card {
+  margin: 0;
+  position: static;
   width: 300px;
   background: white;
   border-radius: 12px;

@@ -115,31 +115,30 @@ $information = $pdo->query("SELECT * FROM hall");
           الآن بسهولة واستمتعوا بتجربة مميزة.
         </p>
         <br /><br />
-        <div class="venue-card">
-            <?php foreach ($information as $key => $value): ?>
-          <div class="image-section">
-                  <img class="image-section" src="images/<?= $value['image'] ?>" />
-                   <div class="top-tags">
-                    <span class="tag"><i class="fas fa-map-marker-alt"></i> <?= $value['arabic_local'] ?></span>
-                    <span class="tag"><i class="fas fa-users"></i> <?= $value['capacity']  ?></span>
-            </div>
-          </div>
-
-          <div class="content">
-            <div class="header">
-           <h3 class="title"><?= $value['arabic_title'] ?></h3>
-              <div class="price">
-              <div class="price-amount"><?= $value['price'] ?> درهم </div>
-              <div class="price-period"><?= $value['arabic_time'] ?></div>
+        <div class="venue-cards-container">
+          <?php foreach ($information as $key => $value): ?>
+            <div class="venue-card">
+              <div class="image-section">
+                <img class="image-section" src="images/<?= $value['image'] ?>" />
+                <div class="top-tags">
+                  <span class="tag"><i class="fas fa-map-marker-alt"></i> <?= $value['arabic_local'] ?></span>
+                  <span class="tag"><i class="fas fa-users"></i> <?= $value['capacity']  ?></span>
+                </div>
+              </div>
+              <div class="content">
+                <div class="header">
+                  <h3 class="title"><?= $value['arabic_title'] ?></h3>
+                  <div class="price">
+                    <div class="price-amount"><?= $value['price'] ?> درهم</div>
+                    <div class="price-period"><?= $value['arabic_time'] ?></div>
+                  </div>
+                </div>
+                <p class="description">
+                  <?= $value['arabic_description'] ?>
+                </p>
+                <a href="arbresrv.php?hall_id=<?= $value['hall_id'] ?>" class="reserve-btn">احجز الآن</a>
               </div>
             </div>
-
-             <p class="description">
-             <?= $value['arabic_description'] ?>
-             </p>
-
-        <a href="arbresrv.php?hall_id=<?= $key ?>" class="reserve-btn"> احجزالآن</a>
-          </div>
           <?php endforeach; ?>
         </div>
         <br /><br />
