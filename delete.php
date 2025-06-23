@@ -1,22 +1,22 @@
 <?php
 include 'db.php';
 
-if (isset($_GET['id'])) {
-    $id = (int) $_GET['id']; 
+if (isset($_GET['hall_id'])) {
+    $id = (int) $_GET['hall_id'];
 
     try {
-        $query = "DELETE FROM `simple-blog` WHERE id = :id";
+        $query = "DELETE FROM hall WHERE hall_id = :id";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        
+
         if ($stmt->execute()) {
             header("Location: dashbord.php");
             exit();
         } else {
-            echo "Error: Could not execute the query.";
+            echo "Error: Could not delete the record.";
         }
     } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        echo "Database error: " . $e->getMessage();
     }
 } else {
     echo "Error: ID is missing.";

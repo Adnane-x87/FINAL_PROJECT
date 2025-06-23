@@ -501,10 +501,8 @@ $totalHalls = $stmt->fetchColumn();
       <div class="nav-item active">
         <i class="fas fa-chart-pie"></i> Dashboard
       </div>
-      <div class="nav-item"><i class="fas fa-calendar-check"></i> Bookings</div>
-      <div class="nav-item"><i class="fas fa-building"></i> Halls</div>
-      <div class="nav-item"><i class="fas fa-users"></i> Clients</div>
-      <div class="nav-item"><i class="fas fa-cog"></i> Settings</div>
+      <a  href="booking.php" class="nav-item" style="color: white; text-decoration :none;"><i class="fas fa-calendar-check"></i> Bookings</a>
+      <a href="client.php" class="nav-item" style="color: white; text-decoration :none;"><i class="fas fa-users"></i> Clients</div>
 
       <div class="user-info">
         <div class="user-avatar">AK</div>
@@ -649,8 +647,8 @@ $totalHalls = $stmt->fetchColumn();
             <td>
               <form action="delete.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this hall?');">
                 <input type="hidden" name="hall_id" value="<?= $hall['hall_id'] ?>">
-                <a href="delete.php" type="submit" class="delete-btn">Delete</a>
-              </form>
+                <a class="delete-btn" href="delete.php?hall_id=<?= $hall['hall_id'] ?>">Delete</a>
+                </form>
             </td>
           </tr>
         <?php endforeach; ?>
