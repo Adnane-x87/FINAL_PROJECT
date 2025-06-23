@@ -204,7 +204,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <body>
     <div class="login-container">
       <div class="left-section">
-        <a href="arab.html">
+        <a href="arab.php">
           <img src="./icon/arablogo.png" alt="logo" class="logo" />
         </a>
         <div class="welcome-text">
@@ -262,7 +262,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <button type="submit" class="login-button">سجل الآن</button>
 
           <div class="signup-link">
-            <a href="arablogin.html">تسجيل الدخول</a>
+            <a href="arablogin.php">تسجيل الدخول</a>
           </div>
         </form>
       </div>

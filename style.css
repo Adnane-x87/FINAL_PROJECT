@@ -620,3 +620,23 @@ hr {
   font-size: 13px;
   color: white;
 }
+
+.logout-btn {
+  background-color: #e53935 !important;
+  color: #fff !important;
+  border: solid 1px #e53935;
+  border-radius: 2px;
+  padding: 4px;
+  position: absolute;
+  top: 50px;
+  width: 90px;
+  right: 60px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logout-btn:hover {
+  background-color: #b71c1c !important;
+  color: #fff !important;
+}

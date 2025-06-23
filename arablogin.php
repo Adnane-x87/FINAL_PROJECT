@@ -223,7 +223,7 @@ unset($_SESSION['login_message'], $_SESSION['login_message_type']);
     <div class="login-container">
       <div class="left-section">
         <div class="welcome-text">
-          <a href="arab.html"
+          <a href="arab.php"
             ><img src="./icon/arablogo.png" alt="شعار" class="logo" /></a
           ><br /><br />
           <h1>مرحبًا بك</h1>
@@ -266,7 +266,7 @@ unset($_SESSION['login_message'], $_SESSION['login_message_type']);
           </div>
 
           <div class="signup-link">
-            <a href="tasjil.html">إنشاء حساب</a>
+            <a href="tasjil.php">إنشاء حساب</a>
           </div>
 
           <button type="submit" class="login-button">دخول</button>

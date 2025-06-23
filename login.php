@@ -15,8 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([$email]);
         $user = $stmt->fetch();
 
-        // If password is plain (not hashed), use ===
-        if ($user && $password === $user['password']) {
+        // If password is hashed, use password_verify
+        if ($user && password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['user_type'] = 'client';
             header('Location: index.php');

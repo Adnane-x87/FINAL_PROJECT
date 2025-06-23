@@ -1,6 +1,18 @@
 <?php 
+session_start();
 include 'db.php'; 
 $information = $pdo->query("SELECT * FROM hall"); 
+
+// Get client info if logged in
+$clientName = '';
+if (isset($_SESSION['user_id']) && isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'client') {
+    $stmt = $pdo->prepare("SELECT username FROM client WHERE user_id = ?");
+    $stmt->execute([$_SESSION['user_id']]);
+    $row = $stmt->fetch();
+    if ($row) {
+        $clientName = $row['username'];
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
@@ -46,7 +58,7 @@ $information = $pdo->query("SELECT * FROM hall");
             ابدأ رحلتك معنا الآن واحجز قاعاتك وملاعبك الرياضية بسهولة. سجّل الآن
             لتجربة حجز سلسة وسريعة
           </p>
-          <a class="welcom-btn" href="tasjil.html">سجل الآن</a>
+          <a class="welcom-btn" href="tasjil.php">سجل الآن</a>
         </div>
         <div class="header-img">
           <img src="./images/hedar-image.jpg" alt="House image" class="house" />

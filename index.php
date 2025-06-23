@@ -1,6 +1,18 @@
 <?php 
+session_start();
 include 'db.php'; 
 $information = $pdo->query("SELECT * FROM hall"); 
+
+// Get client info if logged in
+$clientName = '';
+if (isset($_SESSION['user_id']) && isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'client') {
+    $stmt = $pdo->prepare("SELECT username FROM client WHERE user_id = ?");
+    $stmt->execute([$_SESSION['user_id']]);
+    $row = $stmt->fetch();
+    if ($row) {
+        $clientName = $row['username'];
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -37,13 +49,23 @@ $information = $pdo->query("SELECT * FROM hall");
 
         <div class="links">
           <a href="arab.php" class="mr">MR</a>
-          <a href="login.php" class="login"> LOG IN</a>
+          <?php if ($clientName): ?>
+            <a href="logout.php" class="login logout-btn">LOG OUT</a>
+          <?php else: ?>
+            <a href="login.php" class="login"> LOG IN</a>
+          <?php endif; ?>
         </div>
       </div>
 
       <div class="header">
         <div class="header-text">
-          <h1 class="welcom">Welcome to our website!</h1>
+          <h1 class="welcom">
+            <?php if ($clientName): ?>
+              Welcome <?php echo htmlspecialchars($clientName); ?>!
+            <?php else: ?>
+              Welcome to our website!
+            <?php endif; ?>
+          </h1>
           <p class="welcom-text">
             Start your journey with us now and easily book halls and sports
             fields. Register now for a smooth and quick booking experience!
