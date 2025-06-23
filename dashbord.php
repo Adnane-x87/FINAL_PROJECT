@@ -1,9 +1,20 @@
+<?php
+include "db.php"; // الاتصال بقاعدة البيانات
+$halls = $pdo->query("SELECT * FROM hall")->fetchAll();
+$stmt = $pdo->query("SELECT COUNT(*) FROM hall");
+$totalHalls = $stmt->fetchColumn();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hallane - Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <style>
       * {
         margin: 0;
@@ -42,6 +53,7 @@
         display: flex;
         align-items: center;
         gap: 12px;
+        transition: background 0.2s;
         font-size: 14px;
       }
 
@@ -81,6 +93,7 @@
         flex: 1;
         padding: 30px;
         overflow-y: auto;
+        position: relative;
       }
 
       .header {
@@ -110,22 +123,22 @@
       .header-actions button {
         background: none;
         border: none;
-        font-size: 20px;
+        font-size: 18px;
         cursor: pointer;
         padding: 8px;
         border-radius: 8px;
         transition: background 0.2s;
+        color: #4a5568;
       }
 
       .header-actions button:hover {
         background: #e2e8f0;
       }
 
-      /* Stats Cards */
-      .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
+      /* Stats Cards - Using Position */
+      .stats-container {
+        position: relative;
+        height: 120px;
         margin-bottom: 30px;
       }
 
@@ -137,6 +150,9 @@
         display: flex;
         align-items: center;
         gap: 16px;
+        position: absolute;
+        width: calc(25% - 15px);
+        height: 100px;
       }
 
       .stat-icon {
@@ -178,11 +194,10 @@
         font-size: 14px;
       }
 
-      /* Content Grid */
-      .content-grid {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 30px;
+      /* Content - Using Position */
+      .content-container {
+        position: relative;
+        height: 380px;
         margin-bottom: 30px;
       }
 
@@ -191,6 +206,22 @@
         padding: 24px;
         border-radius: 12px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        position: absolute;
+        left: 0;
+        width: calc(65% - 15px);
+        height: 100%;
+      }
+
+      .recent-bookings {
+        background: white;
+        padding: 24px;
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        position: absolute;
+        right: 0;
+        width: calc(35% - 15px);
+        height: 100%;
+        overflow-y: auto;
       }
 
       .chart-header {
@@ -220,14 +251,6 @@
         justify-content: center;
         color: #a0aec0;
         font-size: 14px;
-      }
-
-      /* Recent Bookings */
-      .recent-bookings {
-        background: white;
-        padding: 24px;
-        border-radius: 12px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
       }
 
       .section-header {
@@ -303,6 +326,7 @@
         border-radius: 12px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         overflow: hidden;
+        margin-bottom: 30px;
       }
 
       .halls-header {
@@ -328,6 +352,7 @@
         font-size: 14px;
         cursor: pointer;
         display: flex;
+        text-decoration: none;
         align-items: center;
         gap: 6px;
       }
@@ -389,12 +414,13 @@
         cursor: pointer;
       }
 
-      /* Top Clients */
+      /* Top Clients - Position Based */
       .clients-section {
         background: white;
         padding: 24px;
         border-radius: 12px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        position: relative;
       }
 
       .client-item {
@@ -437,21 +463,53 @@
         font-weight: 600;
         font-size: 14px;
       }
+
+      table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 14px;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    th {
+      background: #2d5a3d;
+      color: white;
+    }
+
+    tr:hover {
+      background-color: #f1f5f9;
+    }    
+    .delete-btn {
+      background: #e53e3e;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 13px;
+      cursor: pointer;
+      text-decoration:none;
+    }
     </style>
   </head>
   <body>
     <div class="sidebar">
       <img src="./icon/hallane.png" alt="logo" class="logo" />
-      <div class="nav-item active">Dashboard</div>
-      <div class="nav-item">Bookings</div>
-      <div class="nav-item">Halls</div>
-      <div class="nav-item">Clients</div>
-      <div class="nav-item">Settings</div>
+      <div class="nav-item active">
+        <i class="fas fa-chart-pie"></i> Dashboard
+      </div>
+      <div class="nav-item"><i class="fas fa-calendar-check"></i> Bookings</div>
+      <div class="nav-item"><i class="fas fa-building"></i> Halls</div>
+      <div class="nav-item"><i class="fas fa-users"></i> Clients</div>
+      <div class="nav-item"><i class="fas fa-cog"></i> Settings</div>
 
       <div class="user-info">
         <div class="user-avatar">AK</div>
         <div>
-          <div style="font-weight: 600">adnane keskau</div>
+          <div style="font-weight: 600">adnane kesksuu</div>
           <div style="color: #a0aec0">Admin</div>
         </div>
       </div>
@@ -464,49 +522,62 @@
           <p>Overview of your hall rental website</p>
         </div>
         <div class="header-actions">
-          <button>🔔</button>
-          <button>✉️</button>
+          <button><i class="fas fa-bell"></i></button>
+          <button><i class="fas fa-envelope"></i></button>
         </div>
       </div>
 
-      <div class="stats-grid">
+      <div class="stats-container">
         <div class="stat-card">
-          <div class="stat-icon bookings">📊</div>
+          <div class="stat-icon bookings">
+            <i class="fas fa-chart-bar"></i>
+          </div>
           <div class="stat-info">
             <h3>143</h3>
             <p>Active Bookings</p>
           </div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon halls">🏛️</div>
+          <div class="stat-icon halls">
+            <i class="fas fa-building"></i>
+          </div>
           <div class="stat-info">
-            <h3>22</h3>
-            <p>Total Halls</p>
+          <h3><?= $totalHalls ?></h3>
+          <p>Total Halls</p>
           </div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon revenue">💰</div>
+          <div class="stat-icon revenue">
+            <i class="fas fa-dollar-sign"></i>
+          </div>
           <div class="stat-info">
             <h3>$7,850</h3>
             <p>Revenue (this month)</p>
           </div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon clients">👥</div>
+          <div class="stat-icon clients">
+          <i class="fa-solid fa-house"></i>
+          </div>
           <div class="stat-info">
-            <h3>1,098</h3>
-            <p>Total Clients</p>
+          <h3><?= $totalHalls ?></h3>
+          <p>Total Halls</p>
           </div>
         </div>
       </div>
 
-      <div class="content-grid">
+      <div class="content-container">
         <div class="chart-card">
           <div class="chart-header">
             <h3>Monthly Revenue</h3>
             <span class="chart-period">Last 12 months</span>
           </div>
-          <div class="chart-placeholder">Revenue Chart Area</div>
+          <div class="chart-placeholder">
+            <i
+              class="fas fa-chart-line"
+              style="font-size: 48px; opacity: 0.3"
+            ></i>
+          </div>
         </div>
 
         <div class="recent-bookings">
@@ -552,63 +623,42 @@
       <div class="halls-section">
         <div class="halls-header">
           <h3>Available Halls</h3>
-          <button class="add-hall-btn">+ Add New Hall</button>
+          <a href="add.php" class="add-hall-btn">
+            <i class="fas fa-plus"></i> Add New Hall
+          </a>
         </div>
-        <table class="halls-table">
-          <thead>
-            <tr>
-              <th>Hall Name</th>
-              <th>Location</th>
-              <th>Capacity</th>
-              <th>Price/hr</th>
-              <th>Status</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Banquet Hall A</td>
-              <td>Downtown</td>
-              <td>200</td>
-              <td>$150</td>
-              <td>
-                <span class="status-badge status-available">Available</span>
-              </td>
-              <td><button class="view-btn">View</button></td>
-            </tr>
-            <tr>
-              <td>Conference Hall B</td>
-              <td>Westside</td>
-              <td>120</td>
-              <td>$110</td>
-              <td><span class="status-badge status-booked">Booked</span></td>
-              <td><button class="view-btn">View</button></td>
-            </tr>
-            <tr>
-              <td>Wedding Hall</td>
-              <td>Uptown</td>
-              <td>350</td>
-              <td>$250</td>
-              <td>
-                <span class="status-badge status-available">Available</span>
-              </td>
-              <td><button class="view-btn">View</button></td>
-            </tr>
-            <tr>
-              <td>Ballroom C</td>
-              <td>City Center</td>
-              <td>400</td>
-              <td>$300</td>
-              <td>
-                <span class="status-badge status-maintenance">Maintenance</span>
-              </td>
-              <td><button class="view-btn">View</button></td>
-            </tr>
-          </tbody>
-        </table>
+        <table>
+      <thead>
+        <tr>
+          <th>Hall Name</th>
+          <th>Location</th>
+          <th>Capacity</th>
+          <th>Price</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($halls as $hall): ?>
+          <tr>
+            <td><?= htmlspecialchars($hall['title']) ?></td>
+            <td><?= htmlspecialchars($hall['local']) ?></td>
+            <td><?= htmlspecialchars($hall['capacity']) ?></td>
+            <td>$<?= htmlspecialchars($hall['price']) ?></td>
+            <td><span class="status">Available</span></td>
+            <td>
+              <form action="delete.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this hall?');">
+                <input type="hidden" name="hall_id" value="<?= $hall['hall_id'] ?>">
+                <a href="delete.php" type="submit" class="delete-btn">Delete</a>
+              </form>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
       </div>
 
-      <div class="clients-section" style="margin-top: 30px">
+      <div class="clients-section">
         <div class="section-header">
           <h3>Top Clients</h3>
           <span class="view-all">View all</span>
