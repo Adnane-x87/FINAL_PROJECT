@@ -336,7 +336,7 @@ $totalHalls = $stmt->fetchColumn();
               <td><?= htmlspecialchars($hall['title']) ?></td>
               <td><?= htmlspecialchars($hall['local']) ?></td>
               <td><?= htmlspecialchars($hall['capacity']) ?></td>
-              <td>$<?= htmlspecialchars($hall['price']) ?></td>
+              <td><?= htmlspecialchars($hall['price']) ?>DH</td>
               <td><span class="status">Available</span></td>
               <td>
                 <a class="delete-btn" href="delete.php?hall_id=<?= $hall['hall_id'] ?>" onclick="return confirm('Are you sure?');">Delete</a>
