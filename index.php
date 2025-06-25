@@ -324,19 +324,19 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['user_type']) && $_SESSION['u
           <div class="footer-column">
             <h4>Company</h4>
             <ul>
-              <li><a href="two">About Us</a></li>
-              <li><a href="three">Our Halls</a></li>
+              <li><a href="#two">About Us</a></li>
+              <li><a href="#three">Our Halls</a></li>
               <li><a href="#">Our services</a></li>
-              <li><a href="five">Contact Us</a></li>
+              <li><a href="#five">Contact Us</a></li>
             </ul>
           </div>
 
           <div class="footer-column">
             <h4>Navigation</h4>
             <ul>
-              <li><a href="one">Home</a></li>
-              <li><a href="two">About US</a></li>
-              <li><a href="three">Halls</a></li>
+              <li><a href="#one">Home</a></li>
+              <li><a href="#two">About US</a></li>
+              <li><a href="#three">Halls</a></li>
               <li><a href="#">Happy stories</a></li>
             </ul>
           </div>

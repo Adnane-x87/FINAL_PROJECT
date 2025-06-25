@@ -300,19 +300,19 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['user_type']) && $_SESSION['u
           <div class="footer-column">
             <h4>شركة</h4>
             <ul>
-              <li><a href="two">من نحن</a></li>
-              <li><a href="three">قاعاتنا</a></li>
+              <li><a href="#two">من نحن</a></li>
+              <li><a href="#three">قاعاتنا</a></li>
               <li><a href="#">Our services</a></li>
-              <li><a href="five">اتصل بنا</a></li>
+              <li><a href="#five">اتصل بنا</a></li>
             </ul>
           </div>
 
           <div class="footer-column">
             <h4>شريط التنقل</h4>
             <ul>
-              <li><a href="one">الرئيسية</a></li>
-              <li><a href="two">من نحن</a></li>
-              <li><a href="three">قاعاتنا</a></li>
+              <li><a href="#one">الرئيسية</a></li>
+              <li><a href="#two">من نحن</a></li>
+              <li><a href="#three">قاعاتنا</a></li>
               <li><a href="#">قصص سعيدة</a></li>
             </ul>
           </div>
