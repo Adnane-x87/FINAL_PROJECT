@@ -4,7 +4,6 @@ require_once './db.php';
 $errors = [];
 $success = "";
 
-// الحصول على hall_id من URL وإبقاؤه محفوظاً
 $hall_id = $_GET['hall_id'] ?? '';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -16,19 +15,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $client_id = trim($_POST['client_id'] ?? '');
     $date = trim($_POST['date'] ?? '');
 
-    // استخدام القيمة المرسلة من النموذج أو القيمة الأصلية من URL
     $final_hall_id = !empty($submitted_hall_id) ? $submitted_hall_id : $hall_id;
 
     if (empty($first_name) || empty($last_name) || empty($number) || empty($email) || empty($final_hall_id) || empty($client_id) || empty($date)) {
         $errors[] = "All fields are required.";
     }
 
-    // التحقق من صحة البريد الإلكتروني
     if (!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors[] = "Please enter a valid email address.";
     }
 
-    // التحقق من التاريخ (يجب أن يكون في المستقبل)
     if (!empty($date) && strtotime($date) < strtotime('today')) {
         $errors[] = "Please select a future date.";
     }
@@ -40,18 +36,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$first_name, $last_name, $number, $email, $final_hall_id, $client_id, $date]);
             $success = "Reservation saved successfully!";
-            // إعادة تعيين المتغيرات بعد النجاح
             $first_name = $last_name = $number = $email = $date = '';
         } catch (PDOException $e) {
             $errors[] = "Error while saving: " . $e->getMessage();
         }
     }
     
-    // تحديث hall_id للاستخدام في النموذج
     $hall_id = $final_hall_id;
 }
 
-// تحديد اسم القاعة للعرض
 $selected_hall_name = '';
 if ($hall_id) {
     $stmt = $pdo->prepare('SELECT title FROM hall WHERE hall_id = ?');
